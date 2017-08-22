@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tablebg"
+    tools:context="mdstudios.productivitycafe.AddNewBlock">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            app:srcCompat="@drawable/titlebar"
+            tools:ignore="ContentDescription"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/coursesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/courses_label"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="30sp"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Spinner
+                android:id="@+id/coursesSelection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:background="@android:color/background_light"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/centreImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/centredesign"
+                tools:ignore="ContentDescription"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <EditText
+                    android:id="@+id/setTimeHour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="datetime"
+                    android:maxLength="2"
+                    android:text="@string/initial_time"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="60sp"
+                    android:typeface="sans"
+                    tools:ignore="LabelFor"/>
+
+                <TextView
+                    android:id="@+id/space1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:text="@string/divider"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="60sp"/>
+
+                <EditText
+                    android:id="@+id/setTimeMinute"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="time"
+                    android:maxLength="2"
+                    android:text="@string/initial_time"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="60sp"
+                    tools:ignore="LabelFor"/>
+
+                <TextView
+                    android:id="@+id/space2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:text="@string/divider"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="60sp"/>
+
+                <TextView
+                    android:id="@+id/timeSecond"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/initial_time"
+                    android:textAlignment="center"
+                    android:textColor="#ffffff"
+                    android:textSize="60sp"/>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:onClick="stopTime"
+                app:srcCompat="@drawable/stopbutton"
+                tools:ignore="ContentDescription"/>
+
+            <ImageButton
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/transparent"
+                android:onClick="startTime"
+                app:srcCompat="@drawable/playbutton"
+                tools:ignore="ContentDescription"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.widget.RelativeLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tablebg"
+    android:orientation="vertical"
+    tools:context="mdstudios.productivitycafe.EditCourse">
+
+    <EditText
+        android:id="@+id/courseName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/default_course_1"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        tools:ignore="LabelFor"/>
+
+    <TextView
+        android:id="@+id/timeDay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/default_hours_day"
+        android:textColor="#ffffff"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/timeWeek"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/default_hours_week"
+        android:textColor="#ffffff"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/timeMonth"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/default_hours_month"
+        android:textColor="#ffffff"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/timeYear"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/default_hours_year"
+        android:textColor="#ffffff"
+        android:textSize="30sp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/deleteButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/ic_menu_delete"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:fabSize="normal"
+            app:srcCompat="@android:drawable/stat_notify_sync"/>
+    </LinearLayout>
+
+</android.widget.LinearLayout>

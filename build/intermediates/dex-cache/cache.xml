@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="9a85de22dfa1ed2c258e9a0275abae58f2f76bc5">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_980aabcf62b831e5e3e24846e3b117be8a499e24/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/ac7cc2ba43b938ea34b7465fbb7811c4a55dd544/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_30a26472c127ec5d837e30079e40729b718e0a1b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/79a079bfce4d0ac7ee09c903ae99f3835bb639db/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="a71be5f29a1c1e3fd3e84472742668f101a5b936">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_d709af5d7ed4c3661651c31b779f46b4da08bda1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/ba923aef593f059c1f1c5eddc5e1b811d035d661/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="86baa7d1051901fc1b8e7f596732f71f32175bde">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a40d9ef49bcd8633eca889453f2d666b78af2c4b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/f6585e9403fff244b267935987bcfed88ad6c35a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="2a2d9cd43adbe7599a78f2293273a77881c1909a">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_3e1fc45f208e57990a8015c9bfe3a9cbac079be4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/12e06abc694dc2139cad5c4a3156ffe9793c2259/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="b84a791dc9bcda50cb84e4498e0502b3e4dfd47d">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a74b3ba89884758b7e7171c171aa880970e0dd1b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/426d03301db51720ba2ccfd9459e08bb044c084b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_5a9eb3c27636cacc75380390ef5749db4249ea9c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_f67ae29c249ba69a92dccaf0da9a95c6d232274b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/mickeydang/.android/build-cache/be972639758c21925295565e20ab8908e46c3c89/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/classes_692b3a48eaa123b1b3fe3ff9a551223dd89505db/classes.dex" />
+    </item>
+
+</items>

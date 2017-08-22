@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context="mdstudios.productivitycafe.course_item">
+
+    <TextView
+        android:id="@+id/courseName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:text="@string/default_course_1"
+        android:textColor="#ffffff"
+        android:textSize="50sp"/>
+
+    <TextView
+        android:id="@+id/timeDisplayDay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:text="@string/default_hours_day"
+        android:textColor="#ffffff"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/timeDisplayWeek"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:text="@string/default_hours_week"
+        android:textColor="#ffffff"
+        android:textSize="30sp"/>
+
+</LinearLayout>
