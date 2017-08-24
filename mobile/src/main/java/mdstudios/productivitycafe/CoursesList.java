@@ -4,79 +4,86 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONObject;
+import java.io.*;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+import org.xml.sax.*;
+import org.w3c.dom.*;
+import java.io.*;
 import static android.R.attr.x;
 import static android.R.id.list;
 import static mdstudios.productivitycafe.R.id.courseName;
+import static mdstudios.productivitycafe.R.id.timeDay;
 
 public class CoursesList extends ListActivity {
 
     final String FIRST_COURSE_TITLE = "New Course";
     final String MAX_COURSE_ALERT = "Sorry! You have reached the maximum amount of courses!";
-//            this.getString(R.string.max_course_alert);
+
 
     static ListView mCourseList;
     FloatingActionButton mAddCourse;
 
     static ArrayList<Course> mArrayList = new ArrayList<>();
     static CourseListAdapter mAdapter;
-
+    static File mFile;
+    static FileOutputStream fos;
+    static String filepath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses_list);
 
+        mFile = new File(this.getFilesDir().getPath() + "/courselist.xml");
         mCourseList = (ListView) findViewById(list);
         mAddCourse = (FloatingActionButton) findViewById(R.id.addButton);
+        mArrayList.clear();
+        filepath = mFile.getPath();
+//        Log.d("Cafe", "Directory is " + filepath);
+
+        if (mFile.exists()) {
+            try {
+                FileInputStream is = new FileInputStream(mFile);
+                readFile(is);
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+
+        } else {
+            try {
+                mFile.createNewFile();
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+            Log.d("Cafe", "File did not exist");
+        }
+
 
         mAdapter = new CourseListAdapter(this, R.layout.activity_course_item, mArrayList);
-
         mCourseList.setAdapter(mAdapter);
+    }
 
-        //TODO set up edit feature
-        //Currently unable to get a focused child so none of the code below runs!
-//        try {
-//            mTitle = (EditText) mCourseList.getFocusedChild().findViewById(courseName);
-//        } catch (NullPointerException e) {
-//            Log.d("Cafe", "Couldn't find anything!");
-//        }
-//        if (mTitle != null) {
-//            mTitle.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-//                @Override
-//                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                    int focusPosition = mCourseList.getFocusedChild().getId();
-//                    for (int x = 0; x < mAdapter.mListOfCourses.size() - 1 ; x++) {
-//                        if (!Objects.equals(mAdapter.mListOfCourses.get(x).getCourseName(), mTitle.getText().toString())) {
-//                            focusPosition = x;
-//                        }
-//                    }
-//                    mAdapter.mListOfCourses.get(focusPosition).setCourseName(mTitle.getText().toString());
-//                    mAdapter.notifyDataSetChanged();
-//                    return false;
-//                }
-//            });
-//        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storeFile(mFile.getName());
     }
 
     @Override
@@ -105,6 +112,132 @@ public class CoursesList extends ListActivity {
         startActivity(intent);
     }
 
+    public static boolean readFile(FileInputStream xml) {
+        final String PARENT_NODE_TEXT = "course";
+        final String NAME_NODE = "name";
+        final String TIME_NODE_DAY = "timeDay";
+        final String TIME_NODE_WEEK = "timeWeek";
+        final String TIME_NODE_MONTH = "timeMonth";
+        final String TIME_NODE_YEAR = "timeYear";
 
+        Document dom;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        try {
+
+            DocumentBuilder db = dbf.newDocumentBuilder();
+//            Log.d("Cafe", "Document being read");
+            dom = db.parse(xml);
+            Element doc = dom.getDocumentElement();
+            NodeList nl = doc.getChildNodes();
+
+            if (nl != null) {
+                int length = nl.getLength();
+                for (int x = 0 ; x < length ; x ++) {
+
+                    if (nl.item(x).getNodeType() == Node.ELEMENT_NODE) {
+                        Element el =  (Element) nl.item(x);
+
+                        if (el.getNodeName().contains(PARENT_NODE_TEXT)) {
+                            String courseName = el.getElementsByTagName(NAME_NODE).item(0).getTextContent();
+                            Course course = new Course(courseName);
+                            int time = Integer.parseInt(el.getElementsByTagName(TIME_NODE_DAY).item(0).getTextContent());
+                            course.addTimeDay(time);
+                            time = Integer.parseInt(el.getElementsByTagName(TIME_NODE_WEEK).item(0).getTextContent());
+                            course.addTimeWeek(time);
+                            time = Integer.parseInt(el.getElementsByTagName(TIME_NODE_MONTH).item(0).getTextContent());
+                            course.addTimeMonth(time);
+                            time = Integer.parseInt(el.getElementsByTagName(TIME_NODE_YEAR).item(0).getTextContent());
+                            course.addTimeYear(time);
+                            mArrayList.add(course);
+//                            Log.d("Cafe", "Item retrieved successfully");
+                        }
+                    }
+                }
+            }
+
+            return true;
+        } catch (ParserConfigurationException pce) {
+            Log.d("Cafe", pce.getMessage());
+        } catch (SAXException se) {
+            Log.d("Cafe",se.getMessage());
+        } catch (IOException ioe) {
+            Log.d("Cafe",ioe.getMessage());
+        }
+
+        return false;
+    }
+
+    public static void storeFile(String xml) {
+        Document dom;
+        Element e;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            dom = db.newDocument();
+            Element rootEle;
+            Element secondaryEle;
+            String name;
+            long timeDay;
+            long timeWeek;
+            long timeMonth;
+            long timeYear;
+
+            rootEle = dom.createElement("CourseList");
+            for (int x = 0; x < mArrayList.size() ; x++) {
+                name = mArrayList.get(x).getCourseName();
+                timeDay = mArrayList.get(x).getTimeDay();
+                timeWeek = mArrayList.get(x).getTimeWeek();
+                timeMonth = mArrayList.get(x).getTimeMonth();
+                timeYear = mArrayList.get(x).getTimeYear();
+                secondaryEle = dom.createElement("course" + x);
+
+                e = dom.createElement("name");
+                e.appendChild(dom.createTextNode(name));
+                secondaryEle.appendChild(e);
+
+                e = dom.createElement("timeDay");
+                e.appendChild(dom.createTextNode(String.valueOf(timeDay)));
+                secondaryEle.appendChild(e);
+
+                e = dom.createElement("timeWeek");
+                e.appendChild(dom.createTextNode(String.valueOf(timeWeek)));
+                secondaryEle.appendChild(e);
+
+                e = dom.createElement("timeMonth");
+                e.appendChild(dom.createTextNode(String.valueOf(timeMonth)));
+                secondaryEle.appendChild(e);
+
+                e = dom.createElement("timeYear");
+                e.appendChild(dom.createTextNode(String.valueOf(timeYear)));
+                secondaryEle.appendChild(e);
+
+                rootEle.appendChild(secondaryEle);
+            }
+
+            dom.appendChild(rootEle);
+
+            try {
+
+                Transformer tr = TransformerFactory.newInstance().newTransformer();
+                tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                tr.setOutputProperty(OutputKeys.METHOD, "xml");
+                tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+                tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(filepath)));
+
+//                Log.d("Cafe", "File stored successfully");
+            } catch (TransformerException te) {
+                Log.d("Cafe", te.getMessage());
+            } catch (IOException ioe) {
+                Log.d("Cafe", (ioe.getMessage()));
+            }
+
+        } catch (ParserConfigurationException pce) {
+            System.out.println(pce.getMessage());
+        }
+    }
 
 }

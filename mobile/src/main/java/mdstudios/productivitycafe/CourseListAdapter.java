@@ -126,7 +126,7 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
         if (changedCourse != null) {
             changedCourse.setCourseName(holder.mTitle.getText().toString());
             notifyDataSetChanged();
-            Log.d("Cafe", changedCourse.getCourseName() + ": " + position);
+//            Log.d("Cafe", changedCourse.getCourseName() + ": " + position);
             setSelectedItem(null);
         } else {
 

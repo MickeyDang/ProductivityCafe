@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.File;
+
 import javax.xml.datatype.Duration;
 
 import static mdstudios.productivitycafe.CoursesList.mArrayList;
@@ -34,6 +37,7 @@ public class EditCourse extends AppCompatActivity {
     TextView mYears;
     FloatingActionButton mSave;
     FloatingActionButton mDelete;
+    File mFile;
     int mArrayPosition;
 
 
@@ -50,10 +54,12 @@ public class EditCourse extends AppCompatActivity {
         mSave = (FloatingActionButton) findViewById(saveButton);
         mDelete = (FloatingActionButton) findViewById(deleteButton);
 
+        mFile = new File(this.getFilesDir().getPath() + "/courselist.xml");
+
         Intent myIntent = getIntent();
         Bundle bundle = myIntent.getExtras();
         mArrayPosition = (int) bundle.get("Position");
-        Log.d("Cafe", "The position is " + mArrayPosition);
+//        Log.d("Cafe", "The position is " + mArrayPosition);
 
 
         mEditedCourse = CoursesList.mArrayList.get(mArrayPosition);
@@ -89,7 +95,7 @@ public class EditCourse extends AppCompatActivity {
     private void saveChanges () {
         String newName = mEditText.getText().toString();
         mArrayList.get(mArrayPosition).setCourseName(newName);
-
+        CoursesList.storeFile(mFile.getName());
         Intent intent = new Intent(this, CoursesList.class);
         startActivity(intent);
 
@@ -97,6 +103,7 @@ public class EditCourse extends AppCompatActivity {
 
     private void deleteBlock() {
         mArrayList.remove(mArrayPosition);
+        CoursesList.storeFile(mFile.getName());
         Intent intent = new Intent(this, CoursesList.class);
         startActivity(intent);
     }

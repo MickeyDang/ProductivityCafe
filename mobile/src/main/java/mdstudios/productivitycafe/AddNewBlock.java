@@ -14,16 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.math.BigDecimal;
-import java.sql.Time;
-import java.util.Calendar;
+import java.io.File;
 
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.Duration;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static android.view.View.X;
 
 public class AddNewBlock extends AppCompatActivity {
 
@@ -42,7 +34,7 @@ public class AddNewBlock extends AppCompatActivity {
     Course mHandledCourse;
     String[] mCourseNames = new String[CoursesList.mArrayList.size()];
     CountDownTimer mCDT;
-
+    File mFile = new File("courselist.xml");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +69,9 @@ public class AddNewBlock extends AppCompatActivity {
 
     }
 
-    public void startTime (View v) {
+    public void startTime (final View v) {
 
+        v.setEnabled(false);
         final KeyListener hoursKL = mHoursInput.getKeyListener();
         final KeyListener minutesKL = mMinutesInput.getKeyListener();
 
@@ -116,7 +109,7 @@ public class AddNewBlock extends AppCompatActivity {
               long endTime = System.currentTimeMillis();
               long elapsedTime = endTime - startTime;
               saveTimeToCourse(elapsedTime);
-
+              v.setEnabled(true);
           }
 
       };
@@ -149,12 +142,11 @@ public class AddNewBlock extends AppCompatActivity {
 
         Integer position = mSpinner.getSelectedItemPosition();
         Course course = CoursesList.mArrayList.get(position);
-        Log.d("Cafe", "The position is " + position);
-        Log.d("Cafe", "The time elapsed is " + Time);
+
         course.addTimeDay(Time);
         course.addTimeWeek(Time);
         course.addTimeMonth(Time);
         course.addTimeYear(Time);
-
+        CoursesList.storeFile(mFile.getName());
     }
 }
