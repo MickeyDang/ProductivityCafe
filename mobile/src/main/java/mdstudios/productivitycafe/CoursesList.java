@@ -1,13 +1,12 @@
 package mdstudios.productivitycafe;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.io.*;
@@ -20,17 +19,13 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-import org.xml.sax.*;
 import org.w3c.dom.*;
-import java.io.*;
-import static android.R.attr.x;
+import java.util.Date;
 import static android.R.id.list;
-import static mdstudios.productivitycafe.R.id.courseName;
-import static mdstudios.productivitycafe.R.id.timeDay;
+
 
 public class CoursesList extends ListActivity {
 
@@ -39,23 +34,27 @@ public class CoursesList extends ListActivity {
 
 
     static ListView mCourseList;
-    FloatingActionButton mAddCourse;
+    Button mAddCourse;
 
     static ArrayList<Course> mArrayList = new ArrayList<>();
     static CourseListAdapter mAdapter;
     static File mFile;
+    static File mFile2;
     static FileOutputStream fos;
     static String filepath;
+    static String filepath2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses_list);
 
         mFile = new File(this.getFilesDir().getPath() + "/courselist.xml");
+        mFile2 = new File(this.getFilesDir().getPath() + "/daylist.xml");
         mCourseList = (ListView) findViewById(list);
-        mAddCourse = (FloatingActionButton) findViewById(R.id.addButton);
+        mAddCourse = (Button) findViewById(R.id.addButton);
         mArrayList.clear();
         filepath = mFile.getPath();
+        filepath2 = mFile2.getPath();
 //        Log.d("Cafe", "Directory is " + filepath);
 
         if (mFile.exists()) {
@@ -227,6 +226,47 @@ public class CoursesList extends ListActivity {
                 tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
                 tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(filepath)));
+
+//                Log.d("Cafe", "File stored successfully");
+            } catch (TransformerException te) {
+                Log.d("Cafe", te.getMessage());
+            } catch (IOException ioe) {
+                Log.d("Cafe", (ioe.getMessage()));
+            }
+
+        } catch (ParserConfigurationException pce) {
+            System.out.println(pce.getMessage());
+        }
+    }
+
+    public static void storeFile2(String xml, long time) {
+        Document dom;
+        Element e;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            dom = db.newDocument();
+            Element rootEle;
+            Date day = new Date();
+
+            rootEle = dom.createElement("TimeList");
+
+            e = dom.createElement(day.toString());
+            e.appendChild(dom.createTextNode(String.valueOf(time)));
+            rootEle.appendChild(e);
+
+            dom.appendChild(rootEle);
+
+            try {
+
+                Transformer tr = TransformerFactory.newInstance().newTransformer();
+                tr.setOutputProperty(OutputKeys.INDENT, "yes");
+                tr.setOutputProperty(OutputKeys.METHOD, "xml");
+                tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+                tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(filepath2)));
 
 //                Log.d("Cafe", "File stored successfully");
             } catch (TransformerException te) {

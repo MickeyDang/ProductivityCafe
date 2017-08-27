@@ -5,7 +5,7 @@
     <string name="courses">courses</string>
     <string name="stats">statistics</string>
     <string name="start">Start New Block</string>
-    <string name="streak_count">Non Zero Day 0</string>
+    <string name="streak_count">   Non Zero Day 0</string>
     <string name="hours_count">You\'ve Worked 0 Hours This Week!</string>
     <string name="title_activity_add_new_block">AddNewBlock</string>
     <string name="courses_label">Courses:</string>
@@ -28,4 +28,10 @@
     <string name="max_course_alert">Sorry! You have reached the max amount of courses!</string>
     <string name="title_activity_edit_course">EditCourse</string>
     <string name="default_course_name">New Course</string>
+    <string name="title_activity_stats">Stats</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

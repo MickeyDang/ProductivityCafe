@@ -20,7 +20,7 @@
             android:id="@+id/TitleBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#303F9F"
+            android:background="@color/colorPrimaryDark"
             android:paddingTop="0dp"
             app:srcCompat="@drawable/titlebar"
             tools:ignore="ContentDescription"/>
@@ -32,25 +32,17 @@
 
             <TextView
                 android:id="@+id/StreakCount"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="serif"
-                android:gravity="center"
+                android:gravity="start"
                 android:text="@string/streak_count"
                 android:textColor="#ffffff"
                 android:textSize="30sp"
                 android:textStyle="italic"
                 android:typeface="serif"/>
 
-            <ImageButton
-                android:id="@+id/SettingsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                app:srcCompat="@drawable/settingsicon"
-                tools:ignore="ContentDescription"/>
         </LinearLayout>
 
         <ImageView
