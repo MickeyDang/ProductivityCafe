@@ -252,7 +252,9 @@ public class CoursesList extends ListActivity {
 
             rootEle = dom.createElement("TimeList");
 
-            e = dom.createElement(day.toString());
+            String dayTag = day.toString().substring(0,9);
+            dayTag = dayTag.replace(" ", "_");
+            e = dom.createElement(dayTag);
             e.appendChild(dom.createTextNode(String.valueOf(time)));
             rootEle.appendChild(e);
 

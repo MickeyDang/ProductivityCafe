@@ -14,9 +14,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
+import static android.R.attr.id;
+import static android.R.string.no;
 import static mdstudios.productivitycafe.CoursesList.filepath;
+import static mdstudios.productivitycafe.CoursesList.filepath2;
 import static mdstudios.productivitycafe.CoursesList.mArrayList;
 import static mdstudios.productivitycafe.CoursesList.mFile;
+import static mdstudios.productivitycafe.CoursesList.mFile2;
 import static mdstudios.productivitycafe.CoursesList.readFile;
 
 public class OverviewPage extends AppCompatActivity {
@@ -40,6 +44,7 @@ public class OverviewPage extends AppCompatActivity {
     TextView mMainMessageView;
     TextView mStreakView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +59,11 @@ public class OverviewPage extends AppCompatActivity {
         } else {
             modifyDates(sharedPrefs);
         }
+        Log.d("Cafe", "The streak number is " + sharedPrefs.getInt(STREAK_KEY, -1));
 
+        if (!sharedPrefs.getBoolean(CHANGE_KEY, true)) {
+            Log.d("Cafe", "no changes today");
+        }
         mMainMessageView = (TextView) findViewById(R.id.TotalHoursCount);
         String message = MAIN_MESSAGE_ONE + calculateWeekHours() + MAIN_MESSAGE_TWO;
         mMainMessageView.setText(message);
@@ -62,7 +71,6 @@ public class OverviewPage extends AppCompatActivity {
         mStreakView = (TextView) findViewById(R.id.StreakCount);
         message = STREAK_MESSAGE + sharedPrefs.getInt(STREAK_KEY, 0);
         mStreakView.setText(message);
-
 
     }
 
@@ -104,9 +112,10 @@ public class OverviewPage extends AppCompatActivity {
         expiry = expiryDate.getTime() + MILLISECONDS_IN_YEAR;
         editor.putLong(YEAR_KEY, expiry);
 
-        editor.putInt(STREAK_KEY, 0);
+        if (calculateDayHours() == 0) {
+            editor.putInt(STREAK_KEY, 0);
+        }
         editor.putBoolean(CHANGE_KEY, false);
-
         editor.apply();
     }
 
@@ -184,6 +193,14 @@ public class OverviewPage extends AppCompatActivity {
         return hours;
     }
 
+    private int calculateDayHours() {
+        int hours = 0;
+        for (int x = 0 ; x < CoursesList.mArrayList.size(); x++) {
+            hours = hours + Math.round(CoursesList.mArrayList.get(x).getTimeDay()/MILLISECONDS_IN_HOUR);
+        }
+        return hours;
+    }
+
     private void loadArrayList () {
         mFile = new File(this.getFilesDir().getPath() + "/courselist.xml");
 
@@ -207,7 +224,9 @@ public class OverviewPage extends AppCompatActivity {
 
     private void getFilePath() {
         mFile = new File(this.getFilesDir().getPath() + "/courselist.xml");
+        mFile2 = new File(this.getFilesDir().getPath() + "/daylist.xml");
         filepath = mFile.getPath();
+        filepath2 = mFile2.getPath();
         if (mArrayList.size() == 0) {
             loadArrayList();
         }

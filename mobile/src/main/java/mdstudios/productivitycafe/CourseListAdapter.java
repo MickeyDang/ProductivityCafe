@@ -38,7 +38,7 @@ import static mdstudios.productivitycafe.R.id.courseName;
 /**
  * Created by mickeydang on 2017-08-08.
  */
-//change back to base adapter
+
 public class CourseListAdapter extends ArrayAdapter<Course> {
 
     final int MILLISECONDS_IN_HOUR = 1000*60*60;
@@ -52,7 +52,7 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
 
     private Context mContext;
     private int mLayoutResourceID;
-
+    private ArrayList<Course> mListOfCourses = null;
     private Course mSelectedItem;
 
     public Course getSelectedItem() {
@@ -63,7 +63,7 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
         mSelectedItem = selectedItem;
     }
 
-    ArrayList<Course> mListOfCourses = null;
+
 
     public CourseListAdapter(@NonNull Context context, @LayoutRes int resource, ArrayList<Course> data) {
         super(context, resource, data);

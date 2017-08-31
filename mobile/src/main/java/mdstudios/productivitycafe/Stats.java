@@ -1,11 +1,15 @@
 package mdstudios.productivitycafe;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,22 +17,43 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
+import mdstudios.productivitycafe.dummy.DummyContent;
+
+
+
 public class Stats extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CourseByCourse.OnListFragmentInteractionListener,
+        DayByDay.OnFragmentInteractionListener, NonZeroDays.OnFragmentInteractionListener {
+    Fragment mFragment;
+    FragmentManager mFragmentManager;
+    FragmentTransaction mFragmentTransaction;
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Productivity Cafe");
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.backsymbol);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplication(), OverviewPage.class);
+                startActivity(intent);
             }
         });
 
@@ -39,7 +64,16 @@ public class Stats extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
+
+        //default item selected
+        mFragmentManager = getFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragment = CourseByCourse.newInstance(1);
+        mFragmentTransaction.replace(R.id.fragmentHolder, mFragment);
+        mFragmentTransaction.commit();
+
     }
 
     @Override
@@ -64,14 +98,14 @@ public class Stats extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
-        return super.onOptionsItemSelected(item);
+        return false;//super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -80,22 +114,32 @@ public class Stats extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        mFragmentManager = getFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
 
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.course_by_course) {
 
-        } else if (id == R.id.nav_manage) {
+            mFragment = CourseByCourse.newInstance(1);
+            mFragmentTransaction.replace(R.id.fragmentHolder, mFragment);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.day_by_day) {
 
-        } else if (id == R.id.nav_send) {
+            mFragment = DayByDay.newInstance(null, null);
+            mFragmentTransaction.replace(R.id.fragmentHolder, mFragment);
+
+        } else if (id == R.id.non_zero_day) {
+
+            mFragment = NonZeroDays.newInstance(null, null);
+            mFragmentTransaction.replace(R.id.fragmentHolder, mFragment);
 
         }
+
+        mFragmentTransaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

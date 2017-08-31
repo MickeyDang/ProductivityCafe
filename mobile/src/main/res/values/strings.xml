@@ -1,37 +1,22 @@
 <resources>
     <string name="app_name">Productivity Cafe</string>
-    <string name="description1">background description</string>
-    <string name="settings">settings</string>
-    <string name="courses">courses</string>
-    <string name="stats">statistics</string>
-    <string name="start">Start New Block</string>
-    <string name="streak_count">   Non Zero Day 0</string>
+    <string name="streak_count">Non Zero Day 0</string>
     <string name="hours_count">You\'ve Worked 0 Hours This Week!</string>
-    <string name="title_activity_add_new_block">AddNewBlock</string>
     <string name="courses_label">Courses:</string>
     <string name="divider"> : </string>
     <string name="initial_time">00</string>
     <string name="default_course_1">Course 1</string>
-    <string name="default_course_2">Course 2</string>
-    <string name="default_course_3">Course 3</string>
-    <string name="default_course_4">Course 4</string>
-    <string name="default_course_5">Course 5</string>
-    <string name="default_course_6">Course 6</string>
-    <string name="default_course_7">Course 7</string>
-    <string name="default_course_8">Course 8</string>
-    <string name="default_course_9">Course 9</string>
-    <string name="default_course_10">Course 10</string>
     <string name="default_hours_week">Time This Week: </string>
     <string name="default_hours_day">Time Today: </string>
     <string name="default_hours_month">Time This Month: </string>
-    <string name="default_hours_year">This This Year: </string>
-    <string name="max_course_alert">Sorry! You have reached the max amount of courses!</string>
-    <string name="title_activity_edit_course">EditCourse</string>
-    <string name="default_course_name">New Course</string>
+    <string name="default_hours_year">This Year: </string>
     <string name="title_activity_stats">Stats</string>
-
+    <string name="label_text_1">Compare based on:</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nonZeroDay">Non Zero Days</string>
+    <string name="zeroDay">ZeroDays \n</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

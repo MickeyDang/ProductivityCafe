@@ -6,8 +6,31 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/tablebg"
     android:fitsSystemWindows="true"
+    tools:actionBarNavMode="standard"
     tools:openDrawer="start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <FrameLayout
+            android:id="@+id/fragmentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:fitsSystemWindows="true"
+            android:translationY="@dimen/activity_horizontal_margin">
+
+        </FrameLayout>
+    </LinearLayout>
 
     <include
         layout="@layout/app_bar_stats"
@@ -22,5 +45,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_stats"
         app:menu="@menu/activity_stats_drawer"/>
+
 
 </android.support.v4.widget.DrawerLayout>
