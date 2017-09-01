@@ -28,6 +28,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import static android.support.v7.widget.AppCompatDrawableManager.get;
+import static mdstudios.productivitycafe.CoursesList.mFile2;
 
 
 /**
@@ -51,6 +53,8 @@ public class NonZeroDays extends Fragment{
     TextView mSpinnerLabel;
     TextView mZeroDays;
     TextView mNonZeroDays;
+    TextView mZeroPercent;
+    TextView mNonZeroPercent;
     Spinner mSpinner;
     ProgressBar mProgressBar;
     static ArrayAdapter<String> mAdapter;
@@ -82,39 +86,55 @@ public class NonZeroDays extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mZeroDayCount = 0;
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        mSpinnerLabel = (TextView) getActivity().findViewById(R.id.spinnerLabel);
-        mZeroDays = (TextView) getActivity().findViewById(R.id.zeroText);
-        mNonZeroDays = (TextView) getActivity().findViewById(R.id.nonZeroText);
-        mProgressBar = (ProgressBar) getActivity().findViewById(R.id.percentageBar);
-
-        mSpinner = (Spinner) getActivity().findViewById(R.id.spinner);
-        String[] timeSpans = {"Week", "Month", "Quarter"};
-        mAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, timeSpans);
-        mAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        mSpinner.setAdapter(mAdapter);
-//        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                configureView();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_non_zero_days, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_non_zero_days, container, false);
+
+        mSpinnerLabel = (TextView) rootView.findViewById(R.id.spinnerLabel);
+        mZeroDays = (TextView) rootView.findViewById(R.id.zeroText);
+        mNonZeroDays = (TextView) rootView.findViewById(R.id.nonZeroText);
+        mZeroPercent = (TextView) rootView.findViewById(R.id.zeroPercent);
+        mNonZeroPercent = (TextView) rootView.findViewById(R.id.nonZeroPercent);
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.percentageBar);
+        mSpinner = (Spinner) rootView.findViewById(R.id.spinner);
+
+        String[] timeSpans = {"Week", "Month", "Quarter"};
+        mAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, timeSpans);
+        mAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                configureView();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        if (mFile2.exists()) {
+            try {
+                FileInputStream is = new FileInputStream(mFile2);
+                readFile2(is);
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+        }
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -157,13 +177,8 @@ public class NonZeroDays extends Fragment{
     }
 
     public boolean readFile2(FileInputStream xml) {
-        final String PARENT_NODE_TEXT = "course";
-        final String NAME_NODE = "name";
-        final String TIME_NODE_DAY = "timeDay";
-        final String TIME_NODE_WEEK = "timeWeek";
-        final String TIME_NODE_MONTH = "timeMonth";
-        final String TIME_NODE_YEAR = "timeYear";
-        final int mCriteria = 60*60;
+
+        final long CRITERIA = 0;
         Document dom;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -179,12 +194,16 @@ public class NonZeroDays extends Fragment{
                 int length = nl.getLength();
                 int stop = getNumberOfDays();
 
-                for (int x = length ; x > (length - stop) ; x -=1) {
+                if (length < stop) {
+                    stop = length;
+                }
+
+                for (int x = length-1 ; x > (length - stop) ; x -=1) {
 
                     if (nl.item(x).getNodeType() == Node.ELEMENT_NODE) {
                         Element el =  (Element) nl.item(x);
-                        int time = Integer.valueOf(el.getTextContent());
-                        if (time < mCriteria) {
+                        long time = (long) Integer.parseInt(el.getElementsByTagName("Time").item(0).getTextContent());
+                        if (time == CRITERIA) {
                             mZeroDayCount ++;
                         }
 
@@ -205,15 +224,16 @@ public class NonZeroDays extends Fragment{
     }
 
     private int getNumberOfDays () {
-        if (mSpinner.getSelectedItemPosition() == 0) {
-            return 7;
-        } else if (mSpinner.getSelectedItemPosition() == 1) {
-            return 30;
-        } else if (mSpinner.getSelectedItemPosition() == 2) {
-           return 120;
-        } else {
-            return 7;
-        }
+
+            if (mSpinner.getSelectedItemPosition() == 0) {
+                return 7;
+            } else if (mSpinner.getSelectedItemPosition() == 1) {
+                return 30;
+            } else if (mSpinner.getSelectedItemPosition() == 2) {
+                return 120;
+            } else {
+                return 7;
+            }
     }
 
     private float calculatePercentageZeroDays (int zeroDays) {
@@ -222,12 +242,20 @@ public class NonZeroDays extends Fragment{
 
     private void configureView() {
         //3 is a holder till read file thing works
-        float percentage = calculatePercentageZeroDays(3) * 100;
-        String text = percentage + "%";
-        mZeroDays.setText(text);
-        text = (100-percentage) + "%";
-        mNonZeroDays.setText(text);
+        int temp;
+        if (mZeroDayCount == 0) {
+            temp = 3;
+        } else {
+            temp = mZeroDayCount;
+        }
+
+        float percentage = calculatePercentageZeroDays(temp) * 100;
+        int roundPercentage = Math.round(percentage);
+        String text = Math.round(roundPercentage) + "%";
+        mZeroPercent.setText(text);
+        text = (100-roundPercentage) + "%";
+        mNonZeroPercent.setText(text);
         mProgressBar.setMax(100);
-        mProgressBar.incrementProgressBy(Math.round(100-percentage));
+        mProgressBar.setProgress(100-roundPercentage);
     }
 }

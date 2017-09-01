@@ -4,17 +4,36 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import mdstudios.productivitycafe.dummy.DummyContent;
+
+import static mdstudios.productivitycafe.CoursesList.mFile2;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,12 +48,16 @@ public class DayByDay extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    final String ZERO_TIME = "0";
 
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
-
+    TextView ratingView;
+    TextView timeView;
+    TextView colourDisplay;
+    CalendarView mCalendarView;
+    FileInputStream is;
 
     public DayByDay() {
         // Required empty public constructor
@@ -69,8 +92,39 @@ public class DayByDay extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_day_by_day, container, false);
+
+        if (mFile2.exists()) {
+            try {
+                is = new FileInputStream(mFile2);
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+        } else {
+            mFile2 = new File(getActivity().getFilesDir().getPath() + "/daylist.xml");
+            try {
+                is = new FileInputStream(mFile2);
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+        }
+
+        ratingView = (TextView) rootView.findViewById(R.id.ratingView);
+        timeView = (TextView) rootView.findViewById(R.id.totalTimeView);
+        colourDisplay = (TextView) rootView.findViewById(R.id.colourDisplay);
+        mCalendarView = (CalendarView) rootView.findViewById(R.id.myCalendar);
+
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String s = convertDateFormats(month, dayOfMonth);
+                int x = parseFile(s, is);
+                configureView(x);
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_day_by_day, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -112,4 +166,111 @@ public class DayByDay extends Fragment{
         void onFragmentInteraction(Uri uri);
     }
 
+    private void configureView (int hours) {
+        final String POOR = "ZERO DAY";
+        final String SATISFACTORY = "Meh";
+        final String GOOD = "Pretty good";
+        final String EXCELLENT = "Excellent!";
+        final String HOURS = " Hours";
+
+        if (hours > 5) {
+            colourDisplay.setBackgroundColor(getResources().getColor(R.color.customBlue));
+            ratingView.setText(EXCELLENT);
+        } else if (hours > 2) {
+            colourDisplay.setBackgroundColor(getResources().getColor(R.color.customGreen));
+            ratingView.setText(GOOD);
+        } else if (hours > 0) {
+            colourDisplay.setBackgroundColor(getResources().getColor(R.color.customRed));
+            ratingView.setText(SATISFACTORY);
+        } else {
+            colourDisplay.setBackgroundColor(getResources().getColor(R.color.customWhite));
+            ratingView.setText(POOR);
+        }
+
+        String s = hours + HOURS;
+        timeView.setText(s);
+    }
+
+    private String convertDateFormats (int Month, int DayofMonth) {
+        String newDateFormat = null;
+
+        switch (Month) {
+            case 0: newDateFormat = "Jan";
+                break;
+            case 1: newDateFormat = "Feb";
+                break;
+            case 2: newDateFormat = "Mar";
+                break;
+            case 3: newDateFormat = "Apr";
+                break;
+            case 4: newDateFormat = "May";
+                break;
+            case 5: newDateFormat = "Jun";
+                break;
+            case 6: newDateFormat = "Jul";
+                break;
+            case 7: newDateFormat = "Aug";
+                break;
+            case 8: newDateFormat = "Sep";
+                break;
+            case 9: newDateFormat = "Oct";
+                break;
+            case 10: newDateFormat = "Nov";
+                break;
+            case 11: newDateFormat = "Dec";
+
+        }
+
+        newDateFormat = newDateFormat + configureTime(DayofMonth);
+        return newDateFormat;
+    }
+
+    private String configureTime (Integer X) {
+        String newString;
+        if (X < 10) {
+            newString = ZERO_TIME + X;
+        } else {
+            newString = X.toString();
+        }
+
+        return newString;
+    }
+
+    public int parseFile(String inputString, FileInputStream xml) {
+        int hours = 0;
+        Document dom;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        try {
+
+            DocumentBuilder db = dbf.newDocumentBuilder();
+//            Log.d("Cafe", "Document being read");
+            dom = db.parse(xml);
+            Element doc = dom.getDocumentElement();
+            NodeList nl = doc.getChildNodes();
+
+
+            for (int x = nl.getLength() -1 ; x > 0; x-=1) {
+
+                String name = nl.item(x).getNodeName();
+
+                if (inputString.equalsIgnoreCase(name) && nl.item(x).getTextContent() != null) {
+                    Element el =  (Element) nl.item(x);
+                    hours = Integer.parseInt(el.getElementsByTagName("Time").item(0).getTextContent());
+                    break;
+                }
+
+            }
+
+
+        } catch (ParserConfigurationException pce) {
+            Log.d("Cafe", pce.getMessage());
+        } catch (SAXException se) {
+            Log.d("Cafe",se.getMessage());
+        } catch (IOException ioe) {
+            Log.d("Cafe",ioe.getMessage());
+        }
+
+        return hours;
+    }
 }

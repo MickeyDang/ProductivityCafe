@@ -109,7 +109,7 @@ public class CourseByCourseAdapter extends ArrayAdapter<Course>{
         int percent = Math.round(fraction*100);
 
         holder.mProgressBar.setMax(100);
-        holder.mProgressBar.incrementProgressBy(percent);
+        holder.mProgressBar.setProgress(percent);
         String percentText = percent + "%";
         holder.mPercent.setText(percentText);
         return convertView;

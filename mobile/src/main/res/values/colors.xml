@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#5d4037</color>
     <color name="colorAccent">#ff9800</color>
     <color name="background_material_light">#C5CAE9</color>
+    <color name="customWhite">#ffffff</color>
+    <color name="customRed">#DD105E</color>
+    <color name="customGreen">#359768</color>
+    <color name="customBlue">#0245A3</color>
 </resources>

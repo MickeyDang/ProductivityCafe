@@ -1,5 +1,7 @@
 package mdstudios.productivitycafe;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,19 +11,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import static android.R.attr.id;
-import static android.R.string.no;
+
 import static mdstudios.productivitycafe.CoursesList.filepath;
 import static mdstudios.productivitycafe.CoursesList.filepath2;
 import static mdstudios.productivitycafe.CoursesList.mArrayList;
 import static mdstudios.productivitycafe.CoursesList.mFile;
 import static mdstudios.productivitycafe.CoursesList.mFile2;
-import static mdstudios.productivitycafe.CoursesList.readFile;
+
 
 public class OverviewPage extends AppCompatActivity {
     final long MILLISECONDS_IN_DAY = 1000* 60*60*24;
@@ -40,6 +43,9 @@ public class OverviewPage extends AppCompatActivity {
     final String CHANGE_KEY = "ChangedAlready";
     final int MILLISECONDS_IN_HOUR = 1000*60*60;
 
+    final  String EXTRA_TAG = "Time";
+    static PendingIntent mPendingIntent;
+    static AlarmManager mAlarmManager;
 
     TextView mMainMessageView;
     TextView mStreakView;
@@ -72,9 +78,12 @@ public class OverviewPage extends AppCompatActivity {
         message = STREAK_MESSAGE + sharedPrefs.getInt(STREAK_KEY, 0);
         mStreakView.setText(message);
 
+
+        setUpIntents();
+        setUpAlarm();
+
+
     }
-
-
     public void toStats (View v) {
         //goes to stats activity
         Intent toStatsIntent = new Intent(OverviewPage.this, Stats.class);
@@ -230,5 +239,32 @@ public class OverviewPage extends AppCompatActivity {
         if (mArrayList.size() == 0) {
             loadArrayList();
         }
+    }
+
+    private void setUpIntents () {
+        Intent alarmIntent = new Intent(this, StorageService.class);
+        int time = calculateDayHours();
+        alarmIntent.putExtra(EXTRA_TAG, time);
+        mPendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+    }
+
+    private void setUpAlarm() {
+        final int tomorrowDay = 1;
+        final int tomorrowHour = 23;
+
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        if (mAlarmManager.getNextAlarmClock() == null) {
+            Log.d("Cafe", "No alarm set");
+            DateTime today = new DateTime().withTimeAtStartOfDay();
+            DateTime tomorrow = today.plusDays(tomorrowDay).plusHours(tomorrowHour);
+
+            mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                    tomorrow.getMillis(), MILLISECONDS_IN_DAY, mPendingIntent);
+        }
+
+        Log.d("Cafe", "Alarm alrdy set");
+
+
     }
 }

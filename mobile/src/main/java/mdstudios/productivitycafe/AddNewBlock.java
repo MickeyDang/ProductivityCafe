@@ -232,7 +232,7 @@ public class AddNewBlock extends AppCompatActivity {
         course.addTimeMonth(Time);
         course.addTimeYear(Time);
         CoursesList.storeFile(mFile.getName());
-        CoursesList.storeFile2(mFile2.getName(), mArrayList.get(position).getTimeDay());
+//        CoursesList.storeFile2(mFile2.getName(), mArrayList.get(position).getTimeDay());
     }
 
     private void changeStreak () {

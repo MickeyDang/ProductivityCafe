@@ -11,11 +11,13 @@
     <string name="default_hours_month">Time This Month: </string>
     <string name="default_hours_year">This Year: </string>
     <string name="title_activity_stats">Stats</string>
-    <string name="label_text_1">Compare based on:</string>
+    <string name="label_text_1">Compare for this:</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nonZeroDay">Non Zero Days</string>
-    <string name="zeroDay">ZeroDays \n</string>
+    <string name="zeroDay">Zero Days</string>
+    <string name="intro_1">Select A Day</string>
+    <string name="intro_2">On The Calendar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -31,6 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@android:color/background_light"
                 tools:ignore="NestedWeights"/>
 
         </LinearLayout>
@@ -56,22 +57,40 @@
                     android:textColor="#ffffff"
                     android:textSize="25sp"/>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"/>
+
                 <TextView
                     android:id="@+id/nonZeroPercent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_text_1"
+                    android:text="@string/initial_time"
                     android:textColor="#ffffff"
-                    android:textSize="25sp"/>
+                    android:textSize="35sp"
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/percentageBar"
-                style="?android:attr/progressBarStyleHorizontal"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/percentageBar"
+                    style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:maxHeight="@android:dimen/thumbnail_height"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -88,14 +107,18 @@
                     android:textColor="#ffffff"
                     android:textSize="25sp"/>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"/>
+
                 <TextView
                     android:id="@+id/zeroPercent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_text_1"
-                    android:textAlignment="textEnd"
+                    android:text="@string/initial_time"
+                    android:textAlignment="center"
                     android:textColor="#ffffff"
-                    android:textSize="25sp"/>
+                    android:textSize="35sp"/>
             </LinearLayout>
         </LinearLayout>
 

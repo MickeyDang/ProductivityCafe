@@ -3,6 +3,15 @@
 
     <item
         is-multidex="true"
+        jar="/Users/mickeydang/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.9/f7b520c458572890807d143670c9b24f4de90897/joda-time-2.9.9.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f7b520c458572890807d143670c9b24f4de90897">
+        <dex dex="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/transforms/dex/debug/folders/1000/10/joda-time-2.9.9_8c33b46803358c14ec0b4d881e7cf8303c09ca5f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/mickeydang/LocalWork/Projects/ProductivityCafe/mobile/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"

@@ -37,10 +37,10 @@ public class CoursesList extends ListActivity {
     Button mAddCourse;
 
     static ArrayList<Course> mArrayList = new ArrayList<>();
-    static CourseListAdapter mAdapter;
+    CourseListAdapter mAdapter;
     static File mFile;
     static File mFile2;
-    static FileOutputStream fos;
+//    static FileOutputStream fos;
     static String filepath;
     static String filepath2;
     @Override
@@ -64,6 +64,7 @@ public class CoursesList extends ListActivity {
             } catch (IOException ioe) {
                 Log.d("Cafe", ioe.getMessage());
             }
+
 
         } else {
             try {
@@ -246,19 +247,34 @@ public class CoursesList extends ListActivity {
 
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
-            dom = db.newDocument();
-            Element rootEle;
+            try {
+                dom = db.parse(filepath2);
+            } catch (IOException ioe) {
+                dom = db.newDocument();
+            } catch (SAXException saxe) {
+                dom = db.newDocument();
+            }
+
+            NodeList nl = dom.getElementsByTagName("TimeList");
+            Node root;
+            Node middle;
             Date day = new Date();
 
-            rootEle = dom.createElement("TimeList");
+            if (nl.getLength() == 0) {
+                root = dom.createElement("TimeList");
+                dom.appendChild(root);
+            } else {
+                root = nl.item(0);
+            }
 
-            String dayTag = day.toString().substring(0,9);
+            String dayTag = day.toString().substring(0,10);
             dayTag = dayTag.replace(" ", "_");
-            e = dom.createElement(dayTag);
-            e.appendChild(dom.createTextNode(String.valueOf(time)));
-            rootEle.appendChild(e);
 
-            dom.appendChild(rootEle);
+            e = dom.createElement("Time");
+            e.appendChild(dom.createTextNode(String.valueOf(time)));
+            middle = dom.createElement(dayTag);
+            middle.appendChild(e);
+            root.appendChild(middle);
 
             try {
 
