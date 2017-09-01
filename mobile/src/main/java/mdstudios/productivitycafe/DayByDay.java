@@ -101,8 +101,9 @@ public class DayByDay extends Fragment{
                 Log.d("Cafe", ioe.getMessage());
             }
         } else {
-            mFile2 = new File(getActivity().getFilesDir().getPath() + "/daylist.xml");
+//            Log.d("Cafe", "mFile2 DNE");
             try {
+                mFile2.createNewFile();
                 is = new FileInputStream(mFile2);
             } catch (IOException ioe) {
                 Log.d("Cafe", ioe.getMessage());
@@ -149,6 +150,16 @@ public class DayByDay extends Fragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            is.close();
+        } catch (IOException ioe) {
+            Log.d("Cafe", ioe.getMessage());
+        }
     }
 
     /**

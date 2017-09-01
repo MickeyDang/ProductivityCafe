@@ -3,7 +3,7 @@
               android:id="@+id/courseStat"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/colorPrimary"
+              android:background="@color/translucent"
               android:divider="@color/colorPrimary"
               android:dividerPadding="@dimen/activity_horizontal_margin"
               android:orientation="vertical">

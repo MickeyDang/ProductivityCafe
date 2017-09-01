@@ -5,34 +5,21 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 
-import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.xml.datatype.Duration;
-
-import static android.R.attr.data;
-import static android.R.attr.duration;
-import static android.view.View.X;
-import static mdstudios.productivitycafe.CoursesList.mAdapter;
-import static mdstudios.productivitycafe.CoursesList.mArrayList;
-import static mdstudios.productivitycafe.CoursesList.mCourseList;
 import static mdstudios.productivitycafe.R.id.courseName;
 
 /**

@@ -55,7 +55,7 @@ public class CoursesList extends ListActivity {
         mArrayList.clear();
         filepath = mFile.getPath();
         filepath2 = mFile2.getPath();
-//        Log.d("Cafe", "Directory is " + filepath);
+        Log.d("Cafe", "Directory is " + filepath2);
 
         if (mFile.exists()) {
             try {
@@ -64,8 +64,6 @@ public class CoursesList extends ListActivity {
             } catch (IOException ioe) {
                 Log.d("Cafe", ioe.getMessage());
             }
-
-
         } else {
             try {
                 mFile.createNewFile();

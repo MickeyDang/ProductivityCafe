@@ -12,12 +12,21 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import static mdstudios.productivitycafe.CoursesList.filepath;
 import static mdstudios.productivitycafe.CoursesList.filepath2;
@@ -34,7 +43,7 @@ public class OverviewPage extends AppCompatActivity {
     final String DEFAULT_COURSE_NAME = "New Course";
     final String MAIN_MESSAGE_ONE = "You've Worked ";
     final String MAIN_MESSAGE_TWO = " Hours This Week!";
-    final String STREAK_MESSAGE = "Non Zero Day ";
+    final String STREAK_MESSAGE = "Streak: ";
     final String DAY_KEY = "Day";
     final String WEEK_KEY = "Week";
     final String MONTH_KEY = "Month";
@@ -42,11 +51,10 @@ public class OverviewPage extends AppCompatActivity {
     final String STREAK_KEY = "Streak";
     final String CHANGE_KEY = "ChangedAlready";
     final int MILLISECONDS_IN_HOUR = 1000*60*60;
-
     final  String EXTRA_TAG = "Time";
     static PendingIntent mPendingIntent;
     static AlarmManager mAlarmManager;
-
+    private int mStreak;
     TextView mMainMessageView;
     TextView mStreakView;
 
@@ -65,18 +73,17 @@ public class OverviewPage extends AppCompatActivity {
         } else {
             modifyDates(sharedPrefs);
         }
-        Log.d("Cafe", "The streak number is " + sharedPrefs.getInt(STREAK_KEY, -1));
+//        Log.d("Cafe", "The streak number is " + sharedPrefs.getInt(STREAK_KEY, -1));
 
-        if (!sharedPrefs.getBoolean(CHANGE_KEY, true)) {
-            Log.d("Cafe", "no changes today");
-        }
+//        if (!sharedPrefs.getBoolean(CHANGE_KEY, true)) {
+//            Log.d("Cafe", "no changes today");
+//        }
         mMainMessageView = (TextView) findViewById(R.id.TotalHoursCount);
         String message = MAIN_MESSAGE_ONE + calculateWeekHours() + MAIN_MESSAGE_TWO;
         mMainMessageView.setText(message);
 
         mStreakView = (TextView) findViewById(R.id.StreakCount);
-        message = STREAK_MESSAGE + sharedPrefs.getInt(STREAK_KEY, 0);
-        mStreakView.setText(message);
+        String streakText = STREAK_MESSAGE + mStreak;
 
 
         setUpIntents();
@@ -121,10 +128,10 @@ public class OverviewPage extends AppCompatActivity {
         expiry = expiryDate.getTime() + MILLISECONDS_IN_YEAR;
         editor.putLong(YEAR_KEY, expiry);
 
-        if (calculateDayHours() == 0) {
-            editor.putInt(STREAK_KEY, 0);
-        }
-        editor.putBoolean(CHANGE_KEY, false);
+//        if (calculateDayHours() == 0) {
+//            editor.putInt(STREAK_KEY, 0);
+//        }
+//        editor.putBoolean(CHANGE_KEY, false);
         editor.apply();
     }
 
@@ -217,6 +224,7 @@ public class OverviewPage extends AppCompatActivity {
             try {
                 FileInputStream is = new FileInputStream(mFile);
                 CoursesList.readFile(is);
+                is.close();
             } catch (IOException ioe) {
                 Log.d("Cafe", ioe.getMessage());
             }
@@ -224,6 +232,24 @@ public class OverviewPage extends AppCompatActivity {
         } else {
             try {
                 mFile.createNewFile();
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+//            Log.d("Cafe", "File did not exist");
+        }
+
+        if (mFile2.exists()) {
+            try {
+                FileInputStream ins = new FileInputStream(mFile2);
+                mStreak = getStreak(ins);
+                ins.close();
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+
+        } else {
+            try {
+                mFile2.createNewFile();
             } catch (IOException ioe) {
                 Log.d("Cafe", ioe.getMessage());
             }
@@ -265,6 +291,48 @@ public class OverviewPage extends AppCompatActivity {
 
         Log.d("Cafe", "Alarm alrdy set");
 
+    }
+    public int getStreak(FileInputStream xml) {
+        int streak = 0;
+        Document dom;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        Log.d("Cafe", "1");
+        try {
 
+            DocumentBuilder db = dbf.newDocumentBuilder();
+//            Log.d("Cafe", "Document being read");
+            dom = db.parse(xml);
+            Log.d("Cafe", "Hi I'm here");
+            Element doc = dom.getDocumentElement();
+            NodeList nl = doc.getChildNodes();
+
+            for (int x = nl.getLength() -1 ; x > 0; x-=1) {
+
+                if (nl.item(x).getNodeType() == Node.ELEMENT_NODE) {
+                    Element el = (Element) nl.item(x);
+                    int time = Integer.parseInt(el.getElementsByTagName("Time").item(0).getTextContent());
+                    if (time > 0) {
+                        streak++;
+                    } else {
+//                        Log.d("Cafe", "Break!");
+                        break;
+                    }
+                }
+
+            }
+
+//        Log.d("Cafe", "Streak is " + streak);
+        } catch (ParserConfigurationException pce) {
+            Log.d("Cafe", pce.getMessage());
+            Log.d("Cafe", "2");
+        } catch (SAXException se) {
+            Log.d("Cafe",se.getMessage());
+            Log.d("Cafe", "3");
+        } catch (IOException ioe) {
+            Log.d("Cafe",ioe.getMessage());
+            Log.d("Cafe", "4");
+        }
+
+        return streak;
     }
 }

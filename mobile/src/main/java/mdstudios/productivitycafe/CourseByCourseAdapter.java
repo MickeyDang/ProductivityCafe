@@ -33,7 +33,7 @@ public class CourseByCourseAdapter extends ArrayAdapter<Course>{
     private final int MILLISECONDS_IN_SECOND = 1000;
     private final int SECONDS_IN_MINUTE = 60;
     private String ZERO_TIME = "0";
-
+    private static final String TIME_TEXT = "Time Spent: ";
     private ArrayList<Course> mListOfCourses;
     private Context mContext;
     private int mLayoutResourceID;
@@ -96,7 +96,7 @@ public class CourseByCourseAdapter extends ArrayAdapter<Course>{
 
 //        Log.d("Cafe", course.getCourseName());
         holder.mName.setText(course.getCourseName());
-        String timeText = "Time (Week): " + getTimeInString(course.getTimeWeek());
+        String timeText = TIME_TEXT + getTimeInString(course.getTimeWeek());
         holder.mTime.setText(timeText);
 
         long totalTime = 0;

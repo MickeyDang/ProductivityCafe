@@ -236,17 +236,17 @@ public class AddNewBlock extends AppCompatActivity {
     }
 
     private void changeStreak () {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-
-        if (!prefs.getBoolean(CHANGE_KEY, false)) {
-            Log.d("Cafe","Streak changed!");
-            int newStreak = prefs.getInt(STREAK_KEY, 0) + 1;
-            Log.d("Cafe", "New number is " + prefs.getInt(STREAK_KEY, -1));
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(STREAK_KEY, newStreak);
-            editor.putBoolean(CHANGE_KEY, true);
-            editor.apply();
-        }
+//        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+//
+//        if (!prefs.getBoolean(CHANGE_KEY, false)) {
+//            Log.d("Cafe","Streak changed!");
+//            int newStreak = prefs.getInt(STREAK_KEY, 0) + 1;
+//            Log.d("Cafe", "New number is " + prefs.getInt(STREAK_KEY, -1));
+//            SharedPreferences.Editor editor = prefs.edit();
+//            editor.putInt(STREAK_KEY, newStreak);
+//            editor.putBoolean(CHANGE_KEY, true);
+//            editor.apply();
+//        }
     }
 
     private void soundAlarm() {

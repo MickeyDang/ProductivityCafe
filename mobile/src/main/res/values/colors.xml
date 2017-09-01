@@ -8,4 +8,5 @@
     <color name="customRed">#DD105E</color>
     <color name="customGreen">#359768</color>
     <color name="customBlue">#0245A3</color>
+    <color name="translucent">#CC795548</color>
 </resources>

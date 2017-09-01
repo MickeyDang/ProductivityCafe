@@ -29,6 +29,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import static android.support.v7.widget.AppCompatDrawableManager.get;
+import static mdstudios.productivitycafe.CoursesList.mFile;
 import static mdstudios.productivitycafe.CoursesList.mFile2;
 
 
@@ -112,7 +113,10 @@ public class NonZeroDays extends Fragment{
         mAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, timeSpans);
         mAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
-        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
+        configureStreams();
+
+        mSpinner.setBackgroundColor(getResources().getColor(R.color.customWhite));
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -124,15 +128,6 @@ public class NonZeroDays extends Fragment{
 
             }
         });
-
-        if (mFile2.exists()) {
-            try {
-                FileInputStream is = new FileInputStream(mFile2);
-                readFile2(is);
-            } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
-            }
-        }
 
         return rootView;
     }
@@ -175,7 +170,27 @@ public class NonZeroDays extends Fragment{
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
+    public void configureStreams () {
+        if (mFile2.exists()) {
+            try {
+                FileInputStream is = new FileInputStream(mFile2);
+                readFile2(is);
+                is.close();
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+        } else {
+            try {
+                mFile2.createNewFile();
+                FileInputStream is = new FileInputStream(mFile2);
+                readFile2(is);
+                is.close();
+            } catch (IOException ioe) {
+                Log.d("Cafe", ioe.getMessage());
+            }
+            Log.d("Cafe", "File did not exist");
+        }
+    }
     public boolean readFile2(FileInputStream xml) {
 
         final long CRITERIA = 0;
@@ -241,15 +256,8 @@ public class NonZeroDays extends Fragment{
     }
 
     private void configureView() {
-        //3 is a holder till read file thing works
-        int temp;
-        if (mZeroDayCount == 0) {
-            temp = 3;
-        } else {
-            temp = mZeroDayCount;
-        }
 
-        float percentage = calculatePercentageZeroDays(temp) * 100;
+        float percentage = calculatePercentageZeroDays(mZeroDayCount) * 100;
         int roundPercentage = Math.round(percentage);
         String text = Math.round(roundPercentage) + "%";
         mZeroPercent.setText(text);
