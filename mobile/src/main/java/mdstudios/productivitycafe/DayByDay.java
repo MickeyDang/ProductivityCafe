@@ -10,10 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import org.w3c.dom.Document;
@@ -98,15 +94,12 @@ public class DayByDay extends Fragment{
             try {
                 is = new FileInputStream(mFile2);
             } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
             }
         } else {
-//            Log.d("Cafe", "mFile2 DNE");
             try {
                 mFile2.createNewFile();
                 is = new FileInputStream(mFile2);
             } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
             }
         }
 
@@ -119,7 +112,15 @@ public class DayByDay extends Fragment{
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 String s = convertDateFormats(month, dayOfMonth);
+                try {
+                    is = new FileInputStream(mFile2);
+                } catch (IOException ioe) {
+                }
                 int x = parseFile(s, is);
+                try {
+                    is.close();
+                } catch (IOException ioe) {
+                }
                 configureView(x);
             }
         });
@@ -158,7 +159,6 @@ public class DayByDay extends Fragment{
         try {
             is.close();
         } catch (IOException ioe) {
-            Log.d("Cafe", ioe.getMessage());
         }
     }
 
@@ -255,17 +255,14 @@ public class DayByDay extends Fragment{
         try {
 
             DocumentBuilder db = dbf.newDocumentBuilder();
-//            Log.d("Cafe", "Document being read");
             dom = db.parse(xml);
             Element doc = dom.getDocumentElement();
             NodeList nl = doc.getChildNodes();
 
-
             for (int x = nl.getLength() -1 ; x > 0; x-=1) {
 
                 String name = nl.item(x).getNodeName();
-
-                if (inputString.equalsIgnoreCase(name) && nl.item(x).getTextContent() != null) {
+                if (inputString.equalsIgnoreCase(name)) {
                     Element el =  (Element) nl.item(x);
                     hours = Integer.parseInt(el.getElementsByTagName("Time").item(0).getTextContent());
                     break;
@@ -273,13 +270,9 @@ public class DayByDay extends Fragment{
 
             }
 
-
         } catch (ParserConfigurationException pce) {
-            Log.d("Cafe", pce.getMessage());
         } catch (SAXException se) {
-            Log.d("Cafe",se.getMessage());
         } catch (IOException ioe) {
-            Log.d("Cafe",ioe.getMessage());
         }
 
         return hours;

@@ -59,8 +59,6 @@ public class EditCourse extends AppCompatActivity {
         Intent myIntent = getIntent();
         Bundle bundle = myIntent.getExtras();
         mArrayPosition = (int) bundle.get("Position");
-//        Log.d("Cafe", "The position is " + mArrayPosition);
-
 
         mEditedCourse = CoursesList.mArrayList.get(mArrayPosition);
 

@@ -33,13 +33,15 @@ import static mdstudios.productivitycafe.CoursesList.filepath2;
 
 public class StorageService extends BroadcastReceiver {
     final String EXTRA_TAG = "Time";
+    final String PATH_TAG = "Filepath";
     @Override
     public void onReceive(Context context, Intent intent) {
         long time = intent.getLongExtra(EXTRA_TAG, 0);
-        storeFile2(time);
+        String path = intent.getStringExtra(PATH_TAG);
+        storeFile2(time, path);
     }
 
-    public static void storeFile2(long time) {
+    public static void storeFile2(long time, String path) {
         Document dom;
         Element e;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -47,7 +49,7 @@ public class StorageService extends BroadcastReceiver {
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
             try {
-                dom = db.parse(filepath2);
+                dom = db.parse(path);
             } catch (IOException ioe) {
                 dom = db.newDocument();
             } catch (SAXException saxe) {

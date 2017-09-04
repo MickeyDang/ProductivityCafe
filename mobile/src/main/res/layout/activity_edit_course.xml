@@ -66,13 +66,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="bottom">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/deleteButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:clickable="true"
             app:fabSize="normal"
             app:srcCompat="@android:drawable/ic_menu_delete"/>
@@ -80,13 +81,13 @@
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="5"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/saveButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:clickable="true"
             app:fabSize="normal"
             app:srcCompat="@android:drawable/stat_notify_sync"/>

@@ -177,7 +177,6 @@ public class NonZeroDays extends Fragment{
                 readFile2(is);
                 is.close();
             } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
             }
         } else {
             try {
@@ -186,9 +185,7 @@ public class NonZeroDays extends Fragment{
                 readFile2(is);
                 is.close();
             } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
             }
-            Log.d("Cafe", "File did not exist");
         }
     }
     public boolean readFile2(FileInputStream xml) {
@@ -200,7 +197,6 @@ public class NonZeroDays extends Fragment{
         try {
 
             DocumentBuilder db = dbf.newDocumentBuilder();
-//            Log.d("Cafe", "Document being read");
             dom = db.parse(xml);
             Element doc = dom.getDocumentElement();
             NodeList nl = doc.getChildNodes();
@@ -228,11 +224,8 @@ public class NonZeroDays extends Fragment{
 
             return true;
         } catch (ParserConfigurationException pce) {
-            Log.d("Cafe", pce.getMessage());
         } catch (SAXException se) {
-            Log.d("Cafe",se.getMessage());
         } catch (IOException ioe) {
-            Log.d("Cafe",ioe.getMessage());
         }
 
         return false;

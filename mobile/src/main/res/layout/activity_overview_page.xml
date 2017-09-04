@@ -17,7 +17,6 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/TitleBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
@@ -46,7 +45,6 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/CentreDesign"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -60,7 +58,6 @@
 
 
             <ImageButton
-                android:id="@+id/StatsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -70,7 +67,6 @@
                 tools:ignore="ContentDescription"/>
 
             <ImageButton
-                android:id="@+id/CoursesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -80,7 +76,6 @@
                 tools:ignore="ContentDescription"/>
 
             <ImageButton
-                android:id="@+id/AddButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

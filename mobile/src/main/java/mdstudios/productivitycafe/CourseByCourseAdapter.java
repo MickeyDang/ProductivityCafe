@@ -86,7 +86,6 @@ public class CourseByCourseAdapter extends ArrayAdapter<Course>{
             holder.mTime = (TextView) convertView.findViewById(TimeView);
             holder.mPercent = (TextView) convertView.findViewById(percentageView);
             holder.mProgressBar = (ProgressBar) convertView.findViewById(portionBar);
-//            Log.d("Cafe", String.valueOf(convertView.getId()) + " " + convertView.getContentDescription());
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -94,7 +93,6 @@ public class CourseByCourseAdapter extends ArrayAdapter<Course>{
 
         Course course = mListOfCourses.get(position);
 
-//        Log.d("Cafe", course.getCourseName());
         holder.mName.setText(course.getCourseName());
         String timeText = TIME_TEXT + getTimeInString(course.getTimeWeek());
         holder.mTime.setText(timeText);

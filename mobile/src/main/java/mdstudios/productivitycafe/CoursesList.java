@@ -55,22 +55,18 @@ public class CoursesList extends ListActivity {
         mArrayList.clear();
         filepath = mFile.getPath();
         filepath2 = mFile2.getPath();
-        Log.d("Cafe", "Directory is " + filepath2);
 
         if (mFile.exists()) {
             try {
                 FileInputStream is = new FileInputStream(mFile);
                 readFile(is);
             } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
             }
         } else {
             try {
                 mFile.createNewFile();
             } catch (IOException ioe) {
-                Log.d("Cafe", ioe.getMessage());
             }
-            Log.d("Cafe", "File did not exist");
         }
 
 
@@ -96,7 +92,7 @@ public class CoursesList extends ListActivity {
 
     public void makeNewCourse(View v) {
 
-        if (mArrayList.size() < 5) {
+        if (mArrayList.size() < 9) {
             Course newCourse = new Course(FIRST_COURSE_TITLE);
             mArrayList.add(newCourse);
             mAdapter.notifyDataSetChanged();
@@ -124,7 +120,6 @@ public class CoursesList extends ListActivity {
         try {
 
             DocumentBuilder db = dbf.newDocumentBuilder();
-//            Log.d("Cafe", "Document being read");
             dom = db.parse(xml);
             Element doc = dom.getDocumentElement();
             NodeList nl = doc.getChildNodes();
@@ -148,7 +143,6 @@ public class CoursesList extends ListActivity {
                             time = Integer.parseInt(el.getElementsByTagName(TIME_NODE_YEAR).item(0).getTextContent());
                             course.addTimeYear(time);
                             mArrayList.add(course);
-//                            Log.d("Cafe", "Item retrieved successfully");
                         }
                     }
                 }
@@ -156,11 +150,8 @@ public class CoursesList extends ListActivity {
 
             return true;
         } catch (ParserConfigurationException pce) {
-            Log.d("Cafe", pce.getMessage());
         } catch (SAXException se) {
-            Log.d("Cafe",se.getMessage());
         } catch (IOException ioe) {
-            Log.d("Cafe",ioe.getMessage());
         }
 
         return false;
@@ -226,11 +217,8 @@ public class CoursesList extends ListActivity {
 
                 tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(filepath)));
 
-//                Log.d("Cafe", "File stored successfully");
             } catch (TransformerException te) {
-                Log.d("Cafe", te.getMessage());
             } catch (IOException ioe) {
-                Log.d("Cafe", (ioe.getMessage()));
             }
 
         } catch (ParserConfigurationException pce) {
@@ -238,62 +226,5 @@ public class CoursesList extends ListActivity {
         }
     }
 
-    public static void storeFile2(String xml, long time) {
-        Document dom;
-        Element e;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        try {
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            try {
-                dom = db.parse(filepath2);
-            } catch (IOException ioe) {
-                dom = db.newDocument();
-            } catch (SAXException saxe) {
-                dom = db.newDocument();
-            }
-
-            NodeList nl = dom.getElementsByTagName("TimeList");
-            Node root;
-            Node middle;
-            Date day = new Date();
-
-            if (nl.getLength() == 0) {
-                root = dom.createElement("TimeList");
-                dom.appendChild(root);
-            } else {
-                root = nl.item(0);
-            }
-
-            String dayTag = day.toString().substring(0,10);
-            dayTag = dayTag.replace(" ", "_");
-
-            e = dom.createElement("Time");
-            e.appendChild(dom.createTextNode(String.valueOf(time)));
-            middle = dom.createElement(dayTag);
-            middle.appendChild(e);
-            root.appendChild(middle);
-
-            try {
-
-                Transformer tr = TransformerFactory.newInstance().newTransformer();
-                tr.setOutputProperty(OutputKeys.INDENT, "yes");
-                tr.setOutputProperty(OutputKeys.METHOD, "xml");
-                tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                tr.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
-                tr.transform(new DOMSource(dom), new StreamResult(new FileOutputStream(filepath2)));
-
-//                Log.d("Cafe", "File stored successfully");
-            } catch (TransformerException te) {
-                Log.d("Cafe", te.getMessage());
-            } catch (IOException ioe) {
-                Log.d("Cafe", (ioe.getMessage()));
-            }
-
-        } catch (ParserConfigurationException pce) {
-            System.out.println(pce.getMessage());
-        }
-    }
 
 }

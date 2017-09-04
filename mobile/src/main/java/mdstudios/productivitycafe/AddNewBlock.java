@@ -45,12 +45,6 @@ public class AddNewBlock extends AppCompatActivity {
     final int SECONDS_IN_MINUTE = 60;
     final String ZERO_TIME = "0";
     final String NO_BLOCK_ALERT = "No block started";
-    final String DAY_KEY = "Day";
-    final String WEEK_KEY = "Week";
-    final String MONTH_KEY = "Month";
-    final String YEAR_KEY = "Year";
-    final String STREAK_KEY = "Streak";
-    final String CHANGE_KEY = "ChangedAlready";
     final String NOTIFICATION_TITLE = "Productivity Cafe";
     final String NOTIFICATION_MESSAGE = "Time is up!";
     final String NOTIFICATION_COUNTDOWN = "Time Remaining: ";
@@ -85,17 +79,17 @@ public class AddNewBlock extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         stopAlarm();
-        Log.d("Cafe", "onStart");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("Cafe", "onResume");
+
         stopAlarm();
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         long x = prefs.getLong("timeLeft", -1);
-//        Log.d("Cafe", "onResume " + String.valueOf(x));
+
         if (x > 1 && mCDT ==null) {
             startCDT(x, findViewById(R.id.startButton));
         }
@@ -107,7 +101,7 @@ public class AddNewBlock extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_block);
 
-        Log.d("Cafe", "onCreate");
+
         for (int x = 0 ; x < CoursesList.mArrayList.size() ; x++) {
             mCourseNames[x] = CoursesList.mArrayList.get(x).getCourseName();
         }
@@ -120,7 +114,6 @@ public class AddNewBlock extends AppCompatActivity {
         mArrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         mSpinner.setAdapter(mArrayAdapter);
 
-//        Log.d("Cafe", "The length of the array is " + mCourseNames.length);
 
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -148,7 +141,7 @@ public class AddNewBlock extends AppCompatActivity {
             mCDT.cancel();
             //prevents the alarm from triggering in mCDT.onFinish()
             alarmOn = true;
-//            Log.d("Cafe", alarmOn.toString());
+
             mCDT.onFinish();
             mSoundPool.autoPause();
             mSoundPool.stop(mSoundID);
@@ -160,7 +153,9 @@ public class AddNewBlock extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             long timeLeft = (long) savedInstanceState.get("timeLeft");
-            startCDT(timeLeft, findViewById(R.id.startButton));
+            if (timeLeft > 0) {
+                startCDT(timeLeft, findViewById(R.id.startButton));
+            }
         }
 
 
@@ -194,7 +189,7 @@ public class AddNewBlock extends AppCompatActivity {
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong("timeLeft", 0);
-//        Log.d("Cafe", "onStop " + String.valueOf(getTimeRemaining()));
+
         editor.apply();
 
         if (alarmOn) {
@@ -236,21 +231,11 @@ public class AddNewBlock extends AppCompatActivity {
     }
 
     private void changeStreak () {
-//        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-//
-//        if (!prefs.getBoolean(CHANGE_KEY, false)) {
-//            Log.d("Cafe","Streak changed!");
-//            int newStreak = prefs.getInt(STREAK_KEY, 0) + 1;
-//            Log.d("Cafe", "New number is " + prefs.getInt(STREAK_KEY, -1));
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.putInt(STREAK_KEY, newStreak);
-//            editor.putBoolean(CHANGE_KEY, true);
-//            editor.apply();
-//        }
+
     }
 
     private void soundAlarm() {
-        Log.d("Cafe", "Alarm sounding!");
+
         if (alarmOn) {
             makeNotification(NOTIFICATION_TITLE, NOTIFICATION_MESSAGE, true, FINISHED_NOTIF_ID);
         }
@@ -260,9 +245,11 @@ public class AddNewBlock extends AppCompatActivity {
     }
 
     private void stopAlarm() {
-        mSoundPool.stop(mSoundID);
-        mSoundPool.autoPause();
-        alarmOn = false;
+        if (mSoundPool != null) {
+            mSoundPool.stop(mSoundID);
+            mSoundPool.autoPause();
+            alarmOn = false;
+        }
     }
 
     private void makeNotification (String title, String message, boolean autoCancel, int IDNumber) {
@@ -289,20 +276,20 @@ public class AddNewBlock extends AppCompatActivity {
         Bundle outState = new Bundle();
         outState.putLong("timeLeft", getTimeRemaining());
         screenRotating = true;
-        Log.d("Cafe", "onPause");
+
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("Cafe", "onStop");
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("Cafe", "onDestroy");
+
         if (mCDT != null) {
             mCDT.cancel();
             mCDT.onFinish();
@@ -361,8 +348,9 @@ public class AddNewBlock extends AppCompatActivity {
                 editor.putLong("timeLeft", getTimeRemaining());
                 editor.apply();
 
-                if (millisUntilFinished <= MILLISECONDS_IN_SECOND) {
+                if (millisUntilFinished <= 2 * MILLISECONDS_IN_SECOND) {
                     if (!alarmOn) {
+                        alarmOn = true;
                         soundAlarm();
                     }
                 }
@@ -370,9 +358,11 @@ public class AddNewBlock extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-//                Log.d("Cafe", alarmOn.toString());
 
-                mNotificationManager.cancel(COUNTDOWN_NOTIF_ID);
+                if (mNotificationManager != null) {
+                    mNotificationManager.cancel(COUNTDOWN_NOTIF_ID);
+                }
+
                 String string = ZERO_TIME + ZERO_TIME;
 
                 mSecondsView.setText(string);
