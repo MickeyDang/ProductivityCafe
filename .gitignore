@@ -1,3 +1,5 @@
 
 mobile/build.gradle
 mobile/mobile.iml
+*.gradle
+*.iml
